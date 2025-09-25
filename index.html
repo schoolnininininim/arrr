@@ -1,118 +1,118 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>신전의 도전</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden;
-            position: relative;
-            background: linear-gradient(180deg, #b3e0ff 0%, #e0e7ff 100%);
-        }
-        .temple {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 600px;
-            height: 350px;
-            background: #fff;
-            border-radius: 30px 30px 0 0;
-            box-shadow: 0 0 80px 20px #cfcfcf;
-            border: 8px solid #e5e5e5;
-            z-index: 2;
-        }
-        .columns {
-            position: absolute;
-            bottom: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 30px;
-            z-index: 3;
-        }
-        .column {
-            width: 30px;
-            height: 180px;
-            background: linear-gradient(180deg, #eaeaea 0%, #d1d1d1 100%);
-            border-radius: 10px;
-            box-shadow: 0 0 10px #bbb;
-        }
-        .cloud {
-            position: absolute;
-            background: rgba(255,255,255,0.8);
-            border-radius: 50%;
-            filter: blur(2px);
-            z-index: 1;
-        }
-        .cloud1 { top: 80px; left: 120px; width: 180px; height: 80px; }
-        .cloud2 { top: 40px; right: 100px; width: 140px; height: 60px; }
-        .cloud3 { top: 160px; left: 400px; width: 120px; height: 50px; }
-        .light {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255,255,200,0.5) 0%, rgba(255,255,255,0) 80%);
-            z-index: 0;
-        }
-        .challenge-btn {
-            position: absolute;
-            top: 60%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 20px 60px;
-            font-size: 2rem;
-            font-weight: bold;
-            color: #fff;
-            background: linear-gradient(90deg, #6a5acd 0%, #00bfff 100%);
-            border: none;
-            border-radius: 30px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            cursor: pointer;
-            z-index: 10;
-            transition: background 0.3s;
-        }
-        .challenge-btn:hover {
-            background: linear-gradient(90deg, #00bfff 0%, #6a5acd 100%);
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>신전의 도전</title>
+	<style>
+		body {
+			margin: 0;
+			height: 100vh;
+			background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+			overflow: hidden;
+			position: relative;
+			font-family: 'Noto Sans KR', sans-serif;
+		}
+		.temple {
+			position: absolute;
+			left: 50%;
+			top: 55%;
+			transform: translate(-50%, -50%);
+			width: 500px;
+			height: 300px;
+			background: rgba(255,255,255,0.15);
+			border-radius: 30px 30px 0 0;
+			box-shadow: 0 0 60px 20px #fff8, 0 0 200px 40px #b3c6ff88;
+			border: 2px solid #eaeaea;
+			z-index: 2;
+		}
+		.columns {
+			position: absolute;
+			left: 50%;
+			top: 60%;
+			transform: translate(-50%, -50%);
+			display: flex;
+			gap: 30px;
+			z-index: 3;
+		}
+		.column {
+			width: 30px;
+			height: 180px;
+			background: linear-gradient(180deg, #fff 60%, #e0eafc 100%);
+			border-radius: 10px;
+			box-shadow: 0 0 20px 5px #fff6;
+			border: 1px solid #eaeaea;
+		}
+		.cloud {
+			position: absolute;
+			background: #fff;
+			border-radius: 50%;
+			opacity: 0.7;
+			filter: blur(6px);
+			z-index: 1;
+			animation: cloudMove 30s linear infinite;
+		}
+		.cloud1 { width: 180px; height: 80px; left: 10%; top: 20%; animation-delay: 0s; }
+		.cloud2 { width: 120px; height: 60px; left: 70%; top: 15%; animation-delay: 10s; }
+		.cloud3 { width: 100px; height: 40px; left: 40%; top: 70%; animation-delay: 20s; }
+		@keyframes cloudMove {
+			0% { transform: translateX(0); }
+			100% { transform: translateX(100vw); }
+		}
+		.mystic-light {
+			position: absolute;
+			left: 50%;
+			top: 40%;
+			transform: translate(-50%, -50%);
+			width: 600px;
+			height: 600px;
+			background: radial-gradient(circle, #fff8 0%, #b3c6ff44 60%, transparent 100%);
+			filter: blur(40px);
+			z-index: 0;
+			pointer-events: none;
+		}
+		.challenge-btn {
+			position: absolute;
+			left: 50%;
+			top: 80%;
+			transform: translate(-50%, -50%);
+			padding: 20px 60px;
+			font-size: 2rem;
+			color: #fff;
+			background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
+			border: none;
+			border-radius: 40px;
+			box-shadow: 0 0 30px 10px #fc5c7d88;
+			cursor: pointer;
+			font-weight: bold;
+			letter-spacing: 0.1em;
+			transition: transform 0.2s, box-shadow 0.2s;
+			z-index: 10;
+		}
+		.challenge-btn:hover {
+			transform: translate(-50%, -50%) scale(1.08);
+			box-shadow: 0 0 50px 20px #6a82fb88;
+		}
+	</style>
 </head>
 <body>
-    <div class="light"></div>
-    <div class="cloud cloud1"></div>
-    <div class="cloud cloud2"></div>
-    <div class="cloud cloud3"></div>
-    <div class="temple"></div>
-    <div class="columns">
-        <div class="column"></div>
-        <div class="column"></div>
-        <div class="column"></div>
-        <div class="column"></div>
-        <div class="column"></div>
-    </div>
-    <button class="challenge-btn" onclick="location.href='html1'">도전</button>
-    <script>
-        // 신비로운 빛 효과를 추가적으로 넣고 싶으면 아래에 JS로 애니메이션 추가 가능
-        // 예시: 구름이 천천히 움직이게
-        function animateClouds() {
-            const clouds = document.querySelectorAll('.cloud');
-            let offsets = [0, 0, 0];
-            setInterval(() => {
-                offsets = offsets.map((o, i) => o + (i+1)*0.2);
-                clouds[0].style.left = (120 + Math.sin(offsets[0]/30)*30) + 'px';
-                clouds[1].style.right = (100 + Math.cos(offsets[1]/40)*20) + 'px';
-                clouds[2].style.left = (400 + Math.sin(offsets[2]/25)*25) + 'px';
-            }, 50);
-        }
-        animateClouds();
-    </script>
+	<div class="mystic-light"></div>
+	<div class="cloud cloud1"></div>
+	<div class="cloud cloud2"></div>
+	<div class="cloud cloud3"></div>
+	<div class="temple"></div>
+	<div class="columns">
+		<div class="column"></div>
+		<div class="column"></div>
+		<div class="column"></div>
+		<div class="column"></div>
+		<div class="column"></div>
+	</div>
+	<button class="challenge-btn" id="challengeBtn">도전</button>
+	<script>
+		document.getElementById('challengeBtn').addEventListener('click', function() {
+			window.location.href = 'html1';
+		});
+	</script>
 </body>
 </html>

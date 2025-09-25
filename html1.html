@@ -100,6 +100,18 @@
       btn75.textContent = `${Math.round(btn75Prob*100)}% +1`;
     }
 
+    function clampProb(prob, min, max) {
+      return Math.max(Math.min(prob, max), min);
+    }
+
+    function updateAllProbs(delta, isSuccess) {
+      // 성공: 확률 10% 감소, 실패: 10% 증가
+      btn20Prob = clampProb(btn20Prob + delta, btn20Min, 1.0);
+      btn50Prob = clampProb(btn50Prob + delta, btn50Min, 1.0);
+      btn75Prob = clampProb(btn75Prob + delta, btn75Min, 1.0);
+      updateButtonText();
+    }
+
     function updateScore(newScore) {
       score = newScore;
       scoreBoard.textContent = `점수: ${score}`;
@@ -128,25 +140,26 @@
       }
     }
 
-    function handleChallenge(btnId, prob, minProb, scoreInc, setProb) {
+    function handleChallenge(btnId, prob, minProb, scoreInc) {
       if (Math.random() < prob) {
         updateScore(score + scoreInc);
-        // 성공 시 확률 10% 감소, 최소값까지
-        setProb(Math.max(prob - 0.1, minProb));
-        updateButtonText();
+        // 성공 시 모든 확률 10% 감소
+        updateAllProbs(-0.1, true);
       } else {
         updateScore(score - 5);
+        // 실패 시 모든 확률 10% 증가
+        updateAllProbs(0.1, false);
       }
     }
 
     btn20.addEventListener('click', function() {
-      handleChallenge('btn20', btn20Prob, btn20Min, 3, v => btn20Prob = v);
+      handleChallenge('btn20', btn20Prob, btn20Min, 3);
     });
     btn50.addEventListener('click', function() {
-      handleChallenge('btn50', btn50Prob, btn50Min, 2, v => btn50Prob = v);
+      handleChallenge('btn50', btn50Prob, btn50Min, 2);
     });
     btn75.addEventListener('click', function() {
-      handleChallenge('btn75', btn75Prob, btn75Min, 1, v => btn75Prob = v);
+      handleChallenge('btn75', btn75Prob, btn75Min, 1);
     });
 
     // 최초 버튼 텍스트 초기화

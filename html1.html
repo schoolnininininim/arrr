@@ -58,16 +58,6 @@
       transform: scale(1.08);
       box-shadow: 0 0 50px 20px #6a82fb88;
     }
-    .challenge-btn.boost {
-      box-shadow: 0 0 60px 20px #ff9800, 0 0 80px 40px #fc5c7d88;
-      animation: fire 0.5s alternate infinite;
-      background: linear-gradient(90deg, #ff9800 0%, #fc5c7d 100%);
-      color: #fffbe7;
-    }
-    @keyframes fire {
-      0% { filter: brightness(1.2) drop-shadow(0 0 10px #ff9800); }
-      100% { filter: brightness(1.6) drop-shadow(0 0 30px #fc5c7d); }
-    }
   </style>
 </head>
 <body>
@@ -76,20 +66,18 @@
     <div style="margin-bottom:8px;font-size:1.1rem;color:#6a82fb;font-weight:bold;text-align:center;">점수 게이지</div>
     <div style="width:100%;height:32px;background:#e0eafc;border-radius:16px;box-shadow:0 0 10px #b3c6ff44;overflow:hidden;position:relative;">
       <div id="scoreGauge" style="height:100%;width:0;background:linear-gradient(90deg,#6a82fb,#fc5c7d);border-radius:16px;transition:width 0.3s;"></div>
-      <div id="gaugeText" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:1.2rem;color:#fff;font-weight:bold;text-shadow:0 1px 4px #6a82fb88;">0 / 20</div>
+      <div id="gaugeText" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:1.2rem;color:#fff;font-weight:bold;text-shadow:0 1px 4px #6a82fb88;">0 / 30</div>
     </div>
     <div id="winnerMsg" style="margin-top:12px;text-align:center;font-size:1.5rem;color:#fc5c7d;font-weight:bold;display:none;">1등 상품!!</div>
     <div id="failMsg" style="margin-top:12px;text-align:center;font-size:1.5rem;color:#fc5c7d;font-weight:bold;display:none;">실패!</div>
   </div>
   <div class="btn-group">
-    <button class="challenge-btn" id="btn20">20% +3</button>
-    <button class="challenge-btn" id="btn50">50% +2</button>
-    <button class="challenge-btn" id="btn75">75% +1</button>
+    <button class="challenge-btn" id="btn20">80% +3</button>
+    <button class="challenge-btn" id="btn50">90% +2</button>
+    <button class="challenge-btn" id="btn75">100% +1</button>
   </div>
   <script>
     let score = 0;
-    let boostActive = false;
-    let boostType = null; // 'btn20', 'btn50', 'btn75'
     const scoreBoard = document.getElementById('scoreBoard');
     // 게이지 관련 요소
     const scoreGauge = document.getElementById('scoreGauge');
@@ -100,25 +88,27 @@
     const btn20 = document.getElementById('btn20');
     const btn50 = document.getElementById('btn50');
     const btn75 = document.getElementById('btn75');
-    // 부스트 점수 체크용
-    let nextBoostScore = 3;
+
+    // 각 버튼의 현재 확률(초기값), 최소 확률
+    let btn20Prob = 0.8, btn20Min = 0.2;
+    let btn50Prob = 0.9, btn50Min = 0.4;
+    let btn75Prob = 1.0, btn75Min = 0.6;
+
+    function updateButtonText() {
+      btn20.textContent = `${Math.round(btn20Prob*100)}% +3`;
+      btn50.textContent = `${Math.round(btn50Prob*100)}% +2`;
+      btn75.textContent = `${Math.round(btn75Prob*100)}% +1`;
+    }
 
     function updateScore(newScore) {
-      // 3의 배수 넘길 때 부스트 1회만 발동
-      if (newScore >= nextBoostScore && score < nextBoostScore) {
-        boostActive = true;
-        boostType = null;
-        setBoostEffect();
-        nextBoostScore += 3;
-      }
       score = newScore;
       scoreBoard.textContent = `점수: ${score}`;
       // 게이지 업데이트
-      let gaugeScore = Math.min(score, 20);
-      scoreGauge.style.width = (gaugeScore/20*100) + '%';
-      gaugeText.textContent = `${gaugeScore} / 20`;
-      // 20점 달성 시 메시지 표시
-      if (gaugeScore >= 20) {
+      let gaugeScore = Math.min(score, 30);
+      scoreGauge.style.width = (gaugeScore/30*100) + '%';
+      gaugeText.textContent = `${gaugeScore} / 30`;
+      // 30점 달성 시 메시지 표시
+      if (gaugeScore >= 30) {
         winnerMsg.style.display = 'block';
         // 5초 후 html2.html로 이동
         setTimeout(() => {
@@ -127,8 +117,8 @@
       } else {
         winnerMsg.style.display = 'none';
       }
-      // 0점이면 실패 메시지 표시 후 index.html로 이동
-      if (score === 0) {
+      // 0 이하일 때 실패 메시지 표시 후 index.html로 이동
+      if (score <= 0) {
         failMsg.style.display = 'block';
         setTimeout(() => {
           window.location.href = 'index.html';
@@ -137,48 +127,30 @@
         failMsg.style.display = 'none';
       }
     }
-    function setBoostEffect() {
-      // 모든 버튼에 boost 클래스 추가
-      btn20.classList.add('boost');
-      btn50.classList.add('boost');
-      btn75.classList.add('boost');
-      // 버튼 텍스트 변경
-      btn20.textContent = '50% +3';
-      btn50.textContent = '70% +2';
-      btn75.textContent = '90% +1';
-    }
-    function clearBoostEffect() {
-      btn20.classList.remove('boost');
-      btn50.classList.remove('boost');
-      btn75.classList.remove('boost');
-      // 버튼 텍스트 원래대로 복구
-      btn20.textContent = '20% +3';
-      btn50.textContent = '50% +2';
-      btn75.textContent = '75% +1';
-    }
-    function handleChallenge(btnId, baseProb, boostProb, scoreInc) {
-      let prob = baseProb;
-      if (boostActive && (!boostType || boostType === btnId)) {
-        prob = boostProb;
-        boostType = btnId;
-        boostActive = false;
-        setTimeout(clearBoostEffect, 500); // 이펙트 잠깐 유지
-      }
+
+    function handleChallenge(btnId, prob, minProb, scoreInc, setProb) {
       if (Math.random() < prob) {
         updateScore(score + scoreInc);
+        // 성공 시 확률 10% 감소, 최소값까지
+        setProb(Math.max(prob - 0.1, minProb));
+        updateButtonText();
       } else {
-        updateScore(0);
+        updateScore(score - 5);
       }
     }
+
     btn20.addEventListener('click', function() {
-      handleChallenge('btn20', 0.2, 0.5, 3);
+      handleChallenge('btn20', btn20Prob, btn20Min, 3, v => btn20Prob = v);
     });
     btn50.addEventListener('click', function() {
-      handleChallenge('btn50', 0.5, 0.7, 2);
+      handleChallenge('btn50', btn50Prob, btn50Min, 2, v => btn50Prob = v);
     });
     btn75.addEventListener('click', function() {
-      handleChallenge('btn75', 0.75, 0.9, 1);
+      handleChallenge('btn75', btn75Prob, btn75Min, 1, v => btn75Prob = v);
     });
+
+    // 최초 버튼 텍스트 초기화
+    updateButtonText();
   </script>
 </body>
 </html>

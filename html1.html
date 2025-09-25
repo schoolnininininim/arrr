@@ -140,6 +140,7 @@
       <div id="gaugeText" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:1.2rem;color:#fff;font-weight:bold;text-shadow:0 1px 4px #6a82fb88;">0 / 20</div>
     </div>
     <div id="winnerMsg" style="margin-top:12px;text-align:center;font-size:1.5rem;color:#fc5c7d;font-weight:bold;display:none;">1등 상품!!</div>
+    <div id="failMsg" style="margin-top:12px;text-align:center;font-size:1.5rem;color:#fc5c7d;font-weight:bold;display:none;">실패!</div>
   </div>
   <div class="btn-group">
     <button class="challenge-btn" id="btn20">20% +3</button>
@@ -153,6 +154,7 @@
     const scoreGauge = document.getElementById('scoreGauge');
     const gaugeText = document.getElementById('gaugeText');
     const winnerMsg = document.getElementById('winnerMsg');
+    const failMsg = document.getElementById('failMsg');
     function updateScore(newScore) {
       score = newScore;
       scoreBoard.textContent = `점수: ${score}`;
@@ -165,6 +167,15 @@
         winnerMsg.style.display = 'block';
       } else {
         winnerMsg.style.display = 'none';
+      }
+      // 0점이면 실패 메시지 표시 후 index.html로 이동
+      if (score === 0) {
+        failMsg.style.display = 'block';
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1000);
+      } else {
+        failMsg.style.display = 'none';
       }
     }
     document.getElementById('btn20').addEventListener('click', function() {

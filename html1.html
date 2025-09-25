@@ -96,6 +96,10 @@
     // 성공 횟수 추적
     let successCount = 0;
 
+    // 부스트 이전 확률 저장용
+    let boostBackup = null;
+    let boosting = false;
+
     function updateButtonText() {
       btn20.textContent = `${Math.round(btn20Prob*100)}% +3`;
       btn50.textContent = `${Math.round(btn50Prob*100)}% +2`;
@@ -114,19 +118,41 @@
       updateButtonText();
     }
 
-    // 부스트 효과: 모든 버튼 확률 20% 증가(최대 100%)
+    // 부스트 효과: 1회만 발생, boosting 상태로 진입
     function boostAllProbs() {
+      if (boosting) return;
+      boostBackup = {
+        btn20Prob,
+        btn50Prob,
+        btn75Prob
+      };
       btn20Prob = clampProb(btn20Prob + 0.2, btn20Min, 1.0);
       btn50Prob = clampProb(btn50Prob + 0.2, btn50Min, 1.0);
       btn75Prob = clampProb(btn75Prob + 0.2, btn75Min, 1.0);
       updateButtonText();
-      // 부스트 메시지 표시(선택적)
       winnerMsg.textContent = "부스트! 확률 20% 증가!";
       winnerMsg.style.display = 'block';
-      setTimeout(() => {
-        winnerMsg.textContent = "1등 상품!!";
-        if (score < 30) winnerMsg.style.display = 'none';
-      }, 1200);
+      boosting = true;
+    }
+
+    function restoreBoostedProbs(success) {
+      if (!boosting || !boostBackup) return;
+      if (success) {
+        // 성공: 원래 확률에서 5% 감소
+        btn20Prob = clampProb(boostBackup.btn20Prob - 0.05, btn20Min, 1.0);
+        btn50Prob = clampProb(boostBackup.btn50Prob - 0.05, btn50Min, 1.0);
+        btn75Prob = clampProb(boostBackup.btn75Prob - 0.05, btn75Min, 1.0);
+      } else {
+        // 실패: 원래 확률로 복구
+        btn20Prob = boostBackup.btn20Prob;
+        btn50Prob = boostBackup.btn50Prob;
+        btn75Prob = boostBackup.btn75Prob;
+      }
+      boostBackup = null;
+      boosting = false;
+      updateButtonText();
+      winnerMsg.textContent = "1등 상품!!";
+      if (score < 30) winnerMsg.style.display = 'none';
     }
 
     function updateScore(newScore) {
@@ -158,6 +184,20 @@
     }
 
     function handleChallenge(btnId, prob, minProb, scoreInc) {
+      if (boosting) {
+        // 부스트 상태에서 버튼 클릭 처리
+        const isSuccess = Math.random() < prob;
+        if (isSuccess) {
+          updateScore(score + scoreInc);
+          restoreBoostedProbs(true);
+        } else {
+          updateScore(score - 5);
+          restoreBoostedProbs(false);
+        }
+        successCount = 0; // 부스트 후 카운트 초기화
+        return;
+      }
+
       if (Math.random() < prob) {
         updateScore(score + scoreInc);
         // 성공 시 모든 확률 5% 감소

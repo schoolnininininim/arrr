@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko">
-<body>
-  <div class="score-board" id="scoreBoard">점수: 0</div>
-  <div style="margin-top:8px;font-size:1.05rem;color:#6a82fb;font-weight:bold;text-align:center;">점수 게이지</div>
-  <div class="gauge-container">
-    <div id="scoreGauge"></div>
-    <div id="gaugeText">0 / 20</div>
-  </div>
-  <div id="winnerMsg">1등 상품!!</div>
-  <div id="failMsg">실패!</div>
-  <div class="btn-group">
-    <button class="challenge-btn" id="btn20">20% +3</button>
-    <button class="challenge-btn" id="btn50">50% +2</button>
-    <button class="challenge-btn" id="btn75">75% +1</button>
-  </div>
-</body>
-</html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>확률 점수 게임</title>
+  <style>
+    body {
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      font-family: 'Noto Sans KR', sans-serif;
+    }
+    .score-board {
       margin-top: 40px;
       background: #fff;
       border-radius: 16px;
@@ -148,7 +148,7 @@
         updateScore(0);
       }
     });
-    </script>
+  </script>
 </body>
 </html>
     const scoreGauge = document.getElementById('scoreGauge');
@@ -199,5 +199,6 @@
         updateScore(0);
       }
     });
+  </script>
 </body>
 </html>

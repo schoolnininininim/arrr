@@ -78,7 +78,6 @@
   </div>
   <script>
     let score = 0;
-    const scoreBoard = document.getElementById('scoreBoard');
     // 게이지 관련 요소
     const scoreGauge = document.getElementById('scoreGauge');
     const gaugeText = document.getElementById('gaugeText');
@@ -90,9 +89,12 @@
     const btn75 = document.getElementById('btn75');
 
     // 각 버튼의 현재 확률(초기값), 최소 확률
-    let btn20Prob = 0.8, btn20Min = 0.2;
-    let btn50Prob = 0.9, btn50Min = 0.4;
+    let btn20Prob = 0.8, btn20Min = 0.3;
+    let btn50Prob = 0.9, btn50Min = 0.5;
     let btn75Prob = 1.0, btn75Min = 0.6;
+
+    // 성공 횟수 추적
+    let successCount = 0;
 
     function updateButtonText() {
       btn20.textContent = `${Math.round(btn20Prob*100)}% +3`;
@@ -110,6 +112,21 @@
       btn50Prob = clampProb(btn50Prob + delta, btn50Min, 1.0);
       btn75Prob = clampProb(btn75Prob + delta, btn75Min, 1.0);
       updateButtonText();
+    }
+
+    // 부스트 효과: 모든 버튼 확률 20% 증가(최대 100%)
+    function boostAllProbs() {
+      btn20Prob = clampProb(btn20Prob + 0.2, btn20Min, 1.0);
+      btn50Prob = clampProb(btn50Prob + 0.2, btn50Min, 1.0);
+      btn75Prob = clampProb(btn75Prob + 0.2, btn75Min, 1.0);
+      updateButtonText();
+      // 부스트 메시지 표시(선택적)
+      winnerMsg.textContent = "부스트! 확률 20% 증가!";
+      winnerMsg.style.display = 'block';
+      setTimeout(() => {
+        winnerMsg.textContent = "1등 상품!!";
+        if (score < 30) winnerMsg.style.display = 'none';
+      }, 1200);
     }
 
     function updateScore(newScore) {
@@ -145,10 +162,16 @@
         updateScore(score + scoreInc);
         // 성공 시 모든 확률 5% 감소
         updateAllProbs(-0.05, true);
+        successCount++;
+        if (successCount >= 3) {
+          boostAllProbs();
+          successCount = 0;
+        }
       } else {
         updateScore(score - 5);
         // 실패 시 모든 확률 10% 증가
         updateAllProbs(0.1, false);
+        // 실패해도 successCount는 유지
       }
     }
 

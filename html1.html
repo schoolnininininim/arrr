@@ -120,6 +120,10 @@
       // 20점 달성 시 메시지 표시
       if (gaugeScore >= 20) {
         winnerMsg.style.display = 'block';
+        // 5초 후 html2.html로 이동
+        setTimeout(() => {
+          window.location.href = 'html2.html';
+        }, 5000);
       } else {
         winnerMsg.style.display = 'none';
       }

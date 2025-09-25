@@ -166,12 +166,16 @@
 		// 카드 버튼 클릭 이벤트 및 상태 표시
 		document.querySelectorAll('.card-btn').forEach((btn, idx) => {
 			const content = btn.querySelector('.card-content');
+			const pattern = btn.querySelector('.card-pattern');
 			btn.onclick = function() {
 				if (revealed) return;
 				revealed = true;
 				document.querySelectorAll('.card-btn').forEach((b, i) => {
 					b.classList.add('flipped');
 					const c = b.querySelector('.card-content');
+					const p = b.querySelector('.card-pattern');
+					// 카드가 뒤집히면 격자무늬 숨김
+					if (p) p.style.display = 'none';
 					if (i === winnerIdx) {
 						// 성공: 스페이드A만 표시
 						c.innerHTML = `

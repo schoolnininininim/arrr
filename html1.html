@@ -105,9 +105,9 @@
     const btn75 = document.getElementById('btn75');
 
     // 각 버튼의 현재 확률(초기값), 최소 확률
-    let btn20Prob = 0.8, btn20Min = 0.55;
-    let btn50Prob = 0.9, btn50Min = 0.6;
-    let btn75Prob = 1.0, btn75Min = 0.7;
+    let btn20Prob = 0.7, btn20Min = 0.55;
+    let btn50Prob = 0.85, btn50Min = 0.6;
+    let btn75Prob = 1.0, btn75Min = 0.65;
 
     // 성공 횟수 추적
     let successCount = 0;
@@ -153,11 +153,11 @@
         btn50Prob,
         btn75Prob
       };
-      btn20Prob = clampProb(btn20Prob + 0.2, btn20Min, 1.0);
-      btn50Prob = clampProb(btn50Prob + 0.2, btn50Min, 1.0);
-      btn75Prob = clampProb(btn75Prob + 0.2, btn75Min, 1.0);
+      btn20Prob = clampProb(btn20Prob + 0.15, btn20Min, 1.0);
+      btn50Prob = clampProb(btn50Prob + 0.15, btn50Min, 1.0);
+      btn75Prob = clampProb(btn75Prob + 0.15, btn75Min, 1.0);
       updateButtonText();
-      winnerMsg.textContent = "부스트! 확률 20% 증가!";
+      winnerMsg.textContent = "부스트! 확률 15% 증가!";
       winnerMsg.style.display = 'block';
       boosting = true;
       setBurningEffect(true); // 버튼에 불타는 이펙트 적용

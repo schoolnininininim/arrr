@@ -96,32 +96,20 @@
     const gaugeText = document.getElementById('gaugeText');
     const winnerMsg = document.getElementById('winnerMsg');
     const failMsg = document.getElementById('failMsg');
+    // 버튼 요소
+    const btn20 = document.getElementById('btn20');
+    const btn50 = document.getElementById('btn50');
+    const btn75 = document.getElementById('btn75');
+    // 부스트 점수 체크용
+    let nextBoostScore = 3;
+
     function updateScore(newScore) {
-      // 3의 배수 넘길 때 부스트 활성화
-      if (score < 3 && newScore >= 3) {
+      // 3의 배수 넘길 때 부스트 1회만 발동
+      if (newScore >= nextBoostScore && score < nextBoostScore) {
         boostActive = true;
         boostType = null;
         setBoostEffect();
-      } else if (score < 6 && newScore >= 6) {
-        boostActive = true;
-        boostType = null;
-        setBoostEffect();
-      } else if (score < 9 && newScore >= 9) {
-        boostActive = true;
-        boostType = null;
-        setBoostEffect();
-      } else if (score < 12 && newScore >= 12) {
-        boostActive = true;
-        boostType = null;
-        setBoostEffect();
-      } else if (score < 15 && newScore >= 15) {
-        boostActive = true;
-        boostType = null;
-        setBoostEffect();
-      } else if (score < 18 && newScore >= 18) {
-        boostActive = true;
-        boostType = null;
-        setBoostEffect();
+        nextBoostScore += 3;
       }
       score = newScore;
       scoreBoard.textContent = `점수: ${score}`;
@@ -147,14 +135,22 @@
     }
     function setBoostEffect() {
       // 모든 버튼에 boost 클래스 추가
-      document.getElementById('btn20').classList.add('boost');
-      document.getElementById('btn50').classList.add('boost');
-      document.getElementById('btn75').classList.add('boost');
+      btn20.classList.add('boost');
+      btn50.classList.add('boost');
+      btn75.classList.add('boost');
+      // 버튼 텍스트 변경
+      btn20.textContent = '50% +3';
+      btn50.textContent = '70% +2';
+      btn75.textContent = '90% +1';
     }
     function clearBoostEffect() {
-      document.getElementById('btn20').classList.remove('boost');
-      document.getElementById('btn50').classList.remove('boost');
-      document.getElementById('btn75').classList.remove('boost');
+      btn20.classList.remove('boost');
+      btn50.classList.remove('boost');
+      btn75.classList.remove('boost');
+      // 버튼 텍스트 원래대로 복구
+      btn20.textContent = '20% +3';
+      btn50.textContent = '50% +2';
+      btn75.textContent = '75% +1';
     }
     function handleChallenge(btnId, baseProb, boostProb, scoreInc) {
       let prob = baseProb;
@@ -170,13 +166,13 @@
         updateScore(0);
       }
     }
-    document.getElementById('btn20').addEventListener('click', function() {
+    btn20.addEventListener('click', function() {
       handleChallenge('btn20', 0.2, 0.5, 3);
     });
-    document.getElementById('btn50').addEventListener('click', function() {
+    btn50.addEventListener('click', function() {
       handleChallenge('btn50', 0.5, 0.7, 2);
     });
-    document.getElementById('btn75').addEventListener('click', function() {
+    btn75.addEventListener('click', function() {
       handleChallenge('btn75', 0.75, 0.9, 1);
     });
   </script>

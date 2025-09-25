@@ -58,6 +58,22 @@
       transform: scale(1.08);
       box-shadow: 0 0 50px 20px #6a82fb88;
     }
+    /* 불타는 이펙트 */
+    .burning {
+      box-shadow: 0 0 60px 20px #ff9800, 0 0 100px 40px #fc5c7d88;
+      animation: burning-flame 0.5s infinite alternate;
+      border: 2px solid #ff9800;
+    }
+    @keyframes burning-flame {
+      0% {
+        filter: brightness(1.2) drop-shadow(0 0 10px #ff9800);
+        transform: scale(1.05) rotate(-2deg);
+      }
+      100% {
+        filter: brightness(1.5) drop-shadow(0 0 30px #fc5c7d);
+        transform: scale(1.12) rotate(2deg);
+      }
+    }
   </style>
 </head>
 <body>
@@ -89,9 +105,9 @@
     const btn75 = document.getElementById('btn75');
 
     // 각 버튼의 현재 확률(초기값), 최소 확률
-    let btn20Prob = 0.8, btn20Min = 0.3;
-    let btn50Prob = 0.9, btn50Min = 0.5;
-    let btn75Prob = 1.0, btn75Min = 0.6;
+    let btn20Prob = 0.8, btn20Min = 0.5;
+    let btn50Prob = 0.9, btn50Min = 0.6;
+    let btn75Prob = 1.0, btn75Min = 0.65;
 
     // 성공 횟수 추적
     let successCount = 0;
@@ -118,6 +134,17 @@
       updateButtonText();
     }
 
+    function setBurningEffect(enable) {
+      const btns = [btn20, btn50, btn75];
+      btns.forEach(btn => {
+        if (enable) {
+          btn.classList.add('burning');
+        } else {
+          btn.classList.remove('burning');
+        }
+      });
+    }
+
     // 부스트 효과: 1회만 발생, boosting 상태로 진입
     function boostAllProbs() {
       if (boosting) return;
@@ -133,6 +160,7 @@
       winnerMsg.textContent = "부스트! 확률 20% 증가!";
       winnerMsg.style.display = 'block';
       boosting = true;
+      setBurningEffect(true); // 버튼에 불타는 이펙트 적용
     }
 
     function restoreBoostedProbs(success) {
@@ -153,6 +181,7 @@
       updateButtonText();
       winnerMsg.textContent = "1등 상품!!";
       if (score < 30) winnerMsg.style.display = 'none';
+      setBurningEffect(false); // 불타는 이펙트 제거
     }
 
     function updateScore(newScore) {
@@ -223,6 +252,13 @@
     });
     btn75.addEventListener('click', function() {
       handleChallenge('btn75', btn75Prob, btn75Min, 1);
+    });
+
+    // 키보드 이벤트: \ 누르면 점수 30점으로 채움
+    document.addEventListener('keydown', function(e) {
+      if (e.key === '\\') {
+        updateScore(30);
+      }
     });
 
     // 최초 버튼 텍스트 초기화

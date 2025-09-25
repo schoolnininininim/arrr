@@ -3,98 +3,144 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>확률 점수 게임</title>
+  <title>신전의 도전 - 확률 점수 게임</title>
   <style>
     body {
       min-height: 100vh;
       margin: 0;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-      font-family: 'Noto Sans KR', sans-serif;
-    }
-    .score-board {
-      margin-top: 40px;
-      background: #fff;
-      border-radius: 16px;
-      padding: 24px 48px;
-      font-size: 2.2rem;
-      color: #3a3a3a;
-      font-weight: bold;
-      box-shadow: 0 2px 16px #b3c6ff33;
-      text-align: center;
-    }
-    .gauge-container {
-      margin-top: 24px;
-      width: 340px;
-      background: #e0eafc;
-      border-radius: 16px;
-      box-shadow: 0 0 10px #b3c6ff22;
+      background: radial-gradient(ellipse at top left, #232946 60%, #1a1a2e 100%);
+      background-color: #181824;
       overflow: hidden;
       position: relative;
-      height: 32px;
+      font-family: 'Noto Sans KR', sans-serif;
     }
-    #scoreGauge {
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg,#6a82fb,#fc5c7d);
-      border-radius: 16px;
-      transition: width 0.3s;
-    }
-    #gaugeText {
+    .temple {
       position: absolute;
       left: 50%;
-      top: 50%;
-      transform: translate(-50%,-50%);
-      font-size: 1.1rem;
-      color: #fff;
-      font-weight: bold;
-      text-shadow: 0 1px 4px #6a82fb88;
+      top: 55%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 300px;
+      background: rgba(255,255,255,0.15);
+      border-radius: 30px 30px 0 0;
+      box-shadow: 0 0 60px 20px #fff8, 0 0 200px 40px #b3c6ff88;
+      border: 2px solid #eaeaea;
+      z-index: 2;
     }
-    #winnerMsg, #failMsg {
-      margin-top: 18px;
-      text-align: center;
-      font-size: 1.3rem;
-      font-weight: bold;
-      display: none;
-    }
-    #winnerMsg { color: #6a82fb; }
-    #failMsg { color: #fc5c7d; }
-    .btn-group {
-      margin-top: 36px;
+    .columns {
+      position: absolute;
+      left: 50%;
+      top: 60%;
+      transform: translate(-50%, -50%);
       display: flex;
-      gap: 24px;
+      gap: 30px;
+      z-index: 3;
+    }
+    .column {
+      width: 30px;
+      height: 180px;
+      background: linear-gradient(180deg, #fff 60%, #e0eafc 100%);
+      border-radius: 10px;
+      box-shadow: 0 0 20px 5px #fff6;
+      border: 1px solid #eaeaea;
+    }
+    .cloud {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.7;
+      filter: blur(6px);
+      z-index: 1;
+      animation: cloudMove 30s linear infinite;
+    }
+    .cloud1 { width: 180px; height: 80px; left: 10%; top: 20%; animation-delay: 0s; }
+    .cloud2 { width: 120px; height: 60px; left: 70%; top: 15%; animation-delay: 10s; }
+    .cloud3 { width: 100px; height: 40px; left: 40%; top: 70%; animation-delay: 20s; }
+    @keyframes cloudMove {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(100vw); }
+    }
+    .mystic-light {
+      position: absolute;
+      left: 50%;
+      top: 40%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, #fff8 0%, #b3c6ff44 60%, transparent 100%);
+      filter: blur(40px);
+      z-index: 0;
+      pointer-events: none;
+    }
+    .score-board {
+      position: absolute;
+      left: 50%;
+      top: 30%;
+      transform: translate(-50%, -50%);
+      background: rgba(255,255,255,0.7);
+      border-radius: 20px;
+      padding: 30px 60px;
+      font-size: 2.5rem;
+      color: #6a82fb;
+      font-weight: bold;
+      box-shadow: 0 0 30px 10px #b3c6ff44;
+      z-index: 10;
+      text-align: center;
+    }
+    .btn-group {
+      position: absolute;
+      left: 50%;
+      top: 80%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      gap: 40px;
+      z-index: 10;
     }
     .challenge-btn {
-      padding: 16px 32px;
-      font-size: 1.1rem;
+      padding: 20px 40px;
+      font-size: 1.5rem;
       color: #fff;
       background: linear-gradient(90deg, #6a82fb 0%, #fc5c7d 100%);
       border: none;
-      border-radius: 24px;
-      box-shadow: 0 2px 12px #fc5c7d33;
+      border-radius: 40px;
+      box-shadow: 0 0 30px 10px #fc5c7d88;
       cursor: pointer;
       font-weight: bold;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.1em;
       transition: transform 0.2s, box-shadow 0.2s;
     }
     .challenge-btn:hover {
-      transform: scale(1.06);
-      box-shadow: 0 0 24px 8px #6a82fb44;
+      transform: scale(1.08);
+      box-shadow: 0 0 50px 20px #6a82fb88;
     }
   </style>
 </head>
 <body>
-  <div class="score-board" id="scoreBoard">점수: 0</div>
-  <div style="margin-top:8px;font-size:1.05rem;color:#6a82fb;font-weight:bold;text-align:center;">점수 게이지</div>
-  <div class="gauge-container">
-    <div id="scoreGauge"></div>
-    <div id="gaugeText">0 / 20</div>
+  <div class="mystic-light"></div>
+  <div class="cloud cloud1"></div>
+  <div class="cloud cloud2"></div>
+  <div class="cloud cloud3"></div>
+  <div class="temple"></div>
+  <div class="columns">
+    <div class="column"></div>
+    <div class="column"></div>
+    <div class="column"></div>
+    <div class="column"></div>
+    <div class="column"></div>
   </div>
-  <div id="winnerMsg">1등 상품!!</div>
-  <div id="failMsg">실패!</div>
+  <div class="score-board" id="scoreBoard">점수: 0</div>
+  <div style="position:absolute;left:50%;top:38%;transform:translate(-50%,0);width:400px;">
+    <div style="margin-bottom:8px;font-size:1.1rem;color:#6a82fb;font-weight:bold;text-align:center;">점수 게이지</div>
+    <div style="width:100%;height:32px;background:#e0eafc;border-radius:16px;box-shadow:0 0 10px #b3c6ff44;overflow:hidden;position:relative;">
+      <div id="scoreGauge" style="height:100%;width:0;background:linear-gradient(90deg,#6a82fb,#fc5c7d);border-radius:16px;transition:width 0.3s;"></div>
+      <div id="gaugeText" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:1.2rem;color:#fff;font-weight:bold;text-shadow:0 1px 4px #6a82fb88;">0 / 20</div>
+    </div>
+    <div id="winnerMsg" style="margin-top:12px;text-align:center;font-size:1.5rem;color:#fc5c7d;font-weight:bold;display:none;">1등 상품!!</div>
+    <div id="failMsg" style="margin-top:12px;text-align:center;font-size:1.5rem;color:#fc5c7d;font-weight:bold;display:none;">실패!</div>
+  </div>
   <div class="btn-group">
     <button class="challenge-btn" id="btn20">20% +3</button>
     <button class="challenge-btn" id="btn50">50% +2</button>
@@ -103,54 +149,7 @@
   <script>
     let score = 0;
     const scoreBoard = document.getElementById('scoreBoard');
-    const scoreGauge = document.getElementById('scoreGauge');
-    const gaugeText = document.getElementById('gaugeText');
-    const winnerMsg = document.getElementById('winnerMsg');
-    const failMsg = document.getElementById('failMsg');
-    function updateScore(newScore) {
-      score = newScore;
-      scoreBoard.textContent = `점수: ${score}`;
-      let gaugeScore = Math.min(score, 20);
-      scoreGauge.style.width = (gaugeScore/20*100) + '%';
-      gaugeText.textContent = `${gaugeScore} / 20`;
-      if (gaugeScore >= 20) {
-        winnerMsg.style.display = 'block';
-      } else {
-        winnerMsg.style.display = 'none';
-      }
-      if (score === 0) {
-        failMsg.style.display = 'block';
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 1000);
-      } else {
-        failMsg.style.display = 'none';
-      }
-    }
-    document.getElementById('btn20').addEventListener('click', function() {
-      if (Math.random() < 0.2) {
-        updateScore(score + 3);
-      } else {
-        updateScore(0);
-      }
-    });
-    document.getElementById('btn50').addEventListener('click', function() {
-      if (Math.random() < 0.5) {
-        updateScore(score + 2);
-      } else {
-        updateScore(0);
-      }
-    });
-    document.getElementById('btn75').addEventListener('click', function() {
-      if (Math.random() < 0.75) {
-        updateScore(score + 1);
-      } else {
-        updateScore(0);
-      }
-    });
-  </script>
-</body>
-</html>
+    // 게이지 관련 요소
     const scoreGauge = document.getElementById('scoreGauge');
     const gaugeText = document.getElementById('gaugeText');
     const winnerMsg = document.getElementById('winnerMsg');

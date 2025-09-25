@@ -6,7 +6,13 @@
 	<title>2배 혹은 0원 카드 게임</title>
 	<style>
 		body {
-			background: #0077cc; /* 파란색 배경 */
+			/* 기존 파란색 배경 삭제 */
+			/* background: #0077cc; */
+			/* 진한 초록색과 검정색 얼룩 그라데이션 */
+			background: 
+				radial-gradient(circle at 20% 30%, #145c2a 0%, #000 70%),
+				radial-gradient(circle at 80% 70%, #1a7a3c 0%, #000 80%),
+				linear-gradient(135deg, #0d2f18 0%, #000 100%);
 			font-family: 'Segoe UI', Arial, sans-serif;
 			margin: 0;
 			padding: 0;
@@ -56,11 +62,32 @@
 		}
 		.result {
 			font-size: 2rem;
-			font-weight: 500;
+			font-weight: 700;
 			color: #fff;
 			margin: 24px 0 0 0;
 			min-height: 2.5em;
 			text-align: center;
+			background: linear-gradient(90deg, #1a7a3c 0%, #145c2a 100%);
+			border: 2px solid #d4af37;
+			border-radius: 16px;
+			box-shadow: 0 4px 24px rgba(20,92,42,0.25), 0 0 8px #d4af37;
+			padding: 16px 32px;
+			letter-spacing: 2px;
+			transition: box-shadow 0.3s, transform 0.3s;
+			opacity: 0;
+			transform: scale(0.95);
+		}
+		.result.show {
+			animation: result-pop 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+			opacity: 1;
+			transform: scale(1.08);
+			box-shadow: 0 8px 32px rgba(212,175,55,0.35), 0 0 24px #fff;
+		}
+		@keyframes result-pop {
+			0% { opacity: 0; transform: scale(0.7);}
+			60% { opacity: 1; transform: scale(1.15);}
+			80% { transform: scale(0.98);}
+			100% { opacity: 1; transform: scale(1.08);}
 		}
 		.card-status {
 			position: absolute;
@@ -207,11 +234,16 @@
 					}
 				});
 				// 결과 메시지 표시
+				const resultEl = document.getElementById('result');
 				if (idx === winnerIdx) {
-					document.getElementById('result').textContent = '축하합니다!!';
+					resultEl.innerHTML = '🎉 <span style="color:#ffe066;text-shadow:0 0 8px #d4af37;">축하합니다!!</span> 🎉';
 				} else {
-					document.getElementById('result').textContent = '실패...';
+					resultEl.innerHTML = '😢 <span style="color:#eee;text-shadow:0 0 8px #e74c3c;">실패...</span> 😢';
 				}
+				resultEl.classList.remove('show');
+				// 애니메이션 효과를 위해 강제로 리플로우 후 show 클래스 추가
+				void resultEl.offsetWidth;
+				resultEl.classList.add('show');
 			};
 		});
 	</script>

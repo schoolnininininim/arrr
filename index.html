@@ -4,8 +4,8 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>신전의 도전</title>
-	<style>
-		body {
+    <style>
+        body {
 			margin: 0;
 			height: 100vh;
 			background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
@@ -59,18 +59,6 @@
 			0% { transform: translateX(0); }
 			100% { transform: translateX(100vw); }
 		}
-		.mystic-light {
-			position: absolute;
-			left: 50%;
-			top: 40%;
-			transform: translate(-50%, -50%);
-			width: 600px;
-			height: 600px;
-			background: radial-gradient(circle, #fff8 0%, #b3c6ff44 60%, transparent 100%);
-			filter: blur(40px);
-			z-index: 0;
-			pointer-events: none;
-		}
 		.challenge-btn {
 			position: absolute;
 			left: 50%;
@@ -93,16 +81,28 @@
 			transform: translate(-50%, -50%) scale(1.08);
 			box-shadow: 0 0 50px 20px #6a82fb88;
 		}
-	</style>
+    </style>
 </head>
 <body>
-	<div class="mystic-light"></div>
 	<div class="cloud cloud1"></div>
 	<div class="cloud cloud2"></div>
 	<div class="cloud cloud3"></div>
 	<div class="temple"></div>
 	<div class="columns">
 		<div class="column"></div>
+		<div class="column"></div>
+		<div class="column"></div>
+		<div class="column"></div>
+		<div class="column"></div>
+	</div>
+	<button class="challenge-btn" id="challengeBtn">도전</button>
+	<script>
+		document.getElementById('challengeBtn').addEventListener('click', function() {
+			window.location.href = 'html1';
+		});
+	</script>
+</body>
+</html>
 		<div class="column"></div>
 		<div class="column"></div>
 		<div class="column"></div>

@@ -204,10 +204,11 @@
 					// 카드가 뒤집히면 격자무늬 숨김
 					if (p) p.style.display = 'none';
 					if (i === winnerIdx) {
-						// 성공: 스페이드A만 표시
+						// 성공: 스페이드A 이미지와 텍스트 표시
 						c.innerHTML = `
 							<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;">
-								<span style="font-size:2.2rem;font-weight:bold;color:#222;">A</span>
+								<img src="C:\\Users\\82107\\Downloads\\dpdltm.png" alt="Spade A" style="width:80px;height:auto;border-radius:8px;box-shadow:0 2px 8px #222;">
+								<span style="font-size:2.2rem;font-weight:bold;color:#222;margin-top:8px;">A</span>
 								<span style="font-size:3rem;color:#222;">♠</span>
 							</div>
 						`;
@@ -215,7 +216,7 @@
 						// 실패: 광대 그림 대신 사진 첨부 + Jocker 텍스트
 						c.innerHTML = `
 							<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;">
-								<img src="/workspaces/arrr/joker.jpg" alt="Jocker" style="width:80px;height:auto;border-radius:8px;box-shadow:0 2px 8px #222;">
+								<img src="C:\\Users\\82107\\Downloads\\조커.jpg" alt="Jocker" style="width:80px;height:auto;border-radius:8px;box-shadow:0 2px 8px #222;">
 								<span style="font-size:1.3rem;color:#222;margin-top:8px;">Jocker</span>
 							</div>
 						`;
@@ -225,18 +226,6 @@
 				const resultEl = document.getElementById('result');
 				if (idx === winnerIdx) {
 					resultEl.innerHTML = '🎉 <span style="color:#ffe066;text-shadow:0 0 8px #d4af37;">축하합니다!!</span> 🎉';
-				} else {
-					resultEl.innerHTML = '😢 <span style="color:#eee;text-shadow:0 0 8px #e74c3c;">실패...</span> 😢';
-				}
-				resultEl.classList.remove('show');
-				// 애니메이션 효과를 위해 강제로 리플로우 후 show 클래스 추가
-				void resultEl.offsetWidth;
-				resultEl.classList.add('show');
-			};
-		});
-	</script>
-</body>
-</html>
 				} else {
 					resultEl.innerHTML = '😢 <span style="color:#eee;text-shadow:0 0 8px #e74c3c;">실패...</span> 😢';
 				}

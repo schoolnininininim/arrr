@@ -128,6 +128,15 @@
     <div class="column"></div>
   </div>
   <div class="score-board" id="scoreBoard">점수: 0</div>
+  <!-- 게이지 추가 -->
+  <div style="position:absolute;left:50%;top:38%;transform:translate(-50%,0);width:400px;">
+    <div style="margin-bottom:8px;font-size:1.1rem;color:#6a82fb;font-weight:bold;text-align:center;">점수 게이지</div>
+    <div style="width:100%;height:32px;background:#e0eafc;border-radius:16px;box-shadow:0 0 10px #b3c6ff44;overflow:hidden;position:relative;">
+      <div id="scoreGauge" style="height:100%;width:0;background:linear-gradient(90deg,#6a82fb,#fc5c7d);border-radius:16px;transition:width 0.3s;"></div>
+      <div id="gaugeText" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:1.2rem;color:#fff;font-weight:bold;text-shadow:0 1px 4px #6a82fb88;">0 / 20</div>
+    </div>
+    <div id="winnerMsg" style="margin-top:12px;text-align:center;font-size:1.5rem;color:#fc5c7d;font-weight:bold;display:none;">1등 상품!!</div>
+  </div>
   <div class="btn-group">
     <button class="challenge-btn" id="btn20">20% +3</button>
     <button class="challenge-btn" id="btn50">50% +2</button>
@@ -136,9 +145,23 @@
   <script>
     let score = 0;
     const scoreBoard = document.getElementById('scoreBoard');
+    // 게이지 관련 요소
+    const scoreGauge = document.getElementById('scoreGauge');
+    const gaugeText = document.getElementById('gaugeText');
+    const winnerMsg = document.getElementById('winnerMsg');
     function updateScore(newScore) {
       score = newScore;
       scoreBoard.textContent = `점수: ${score}`;
+      // 게이지 업데이트
+      let gaugeScore = Math.min(score, 20);
+      scoreGauge.style.width = (gaugeScore/20*100) + '%';
+      gaugeText.textContent = `${gaugeScore} / 20`;
+      // 20점 달성 시 메시지 표시
+      if (gaugeScore >= 20) {
+        winnerMsg.style.display = 'block';
+      } else {
+        winnerMsg.style.display = 'none';
+      }
     }
     document.getElementById('btn20').addEventListener('click', function() {
       if (Math.random() < 0.2) {

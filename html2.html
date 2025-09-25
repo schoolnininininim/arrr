@@ -206,7 +206,12 @@
 						`;
 					}
 				});
-				document.getElementById('result').textContent = '';
+				// 결과 메시지 표시
+				if (idx === winnerIdx) {
+					document.getElementById('result').textContent = '축하합니다!!';
+				} else {
+					document.getElementById('result').textContent = '실패...';
+				}
 			};
 		});
 	</script>

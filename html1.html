@@ -105,7 +105,7 @@
     }
 
     function updateAllProbs(delta, isSuccess) {
-      // 성공: 확률 10% 감소, 실패: 10% 증가
+      // 성공: 확률 5% 감소, 실패: 10% 증가
       btn20Prob = clampProb(btn20Prob + delta, btn20Min, 1.0);
       btn50Prob = clampProb(btn50Prob + delta, btn50Min, 1.0);
       btn75Prob = clampProb(btn75Prob + delta, btn75Min, 1.0);
@@ -143,8 +143,8 @@
     function handleChallenge(btnId, prob, minProb, scoreInc) {
       if (Math.random() < prob) {
         updateScore(score + scoreInc);
-        // 성공 시 모든 확률 10% 감소
-        updateAllProbs(-0.1, true);
+        // 성공 시 모든 확률 5% 감소
+        updateAllProbs(-0.05, true);
       } else {
         updateScore(score - 5);
         // 실패 시 모든 확률 10% 증가

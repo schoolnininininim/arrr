@@ -58,6 +58,16 @@
       transform: scale(1.08);
       box-shadow: 0 0 50px 20px #6a82fb88;
     }
+    .challenge-btn.boost {
+      box-shadow: 0 0 60px 20px #ff9800, 0 0 80px 40px #fc5c7d88;
+      animation: fire 0.5s alternate infinite;
+      background: linear-gradient(90deg, #ff9800 0%, #fc5c7d 100%);
+      color: #fffbe7;
+    }
+    @keyframes fire {
+      0% { filter: brightness(1.2) drop-shadow(0 0 10px #ff9800); }
+      100% { filter: brightness(1.6) drop-shadow(0 0 30px #fc5c7d); }
+    }
   </style>
 </head>
 <body>
@@ -78,6 +88,8 @@
   </div>
   <script>
     let score = 0;
+    let boostActive = false;
+    let boostType = null; // 'btn20', 'btn50', 'btn75'
     const scoreBoard = document.getElementById('scoreBoard');
     // 게이지 관련 요소
     const scoreGauge = document.getElementById('scoreGauge');
@@ -85,6 +97,32 @@
     const winnerMsg = document.getElementById('winnerMsg');
     const failMsg = document.getElementById('failMsg');
     function updateScore(newScore) {
+      // 3의 배수 넘길 때 부스트 활성화
+      if (score < 3 && newScore >= 3) {
+        boostActive = true;
+        boostType = null;
+        setBoostEffect();
+      } else if (score < 6 && newScore >= 6) {
+        boostActive = true;
+        boostType = null;
+        setBoostEffect();
+      } else if (score < 9 && newScore >= 9) {
+        boostActive = true;
+        boostType = null;
+        setBoostEffect();
+      } else if (score < 12 && newScore >= 12) {
+        boostActive = true;
+        boostType = null;
+        setBoostEffect();
+      } else if (score < 15 && newScore >= 15) {
+        boostActive = true;
+        boostType = null;
+        setBoostEffect();
+      } else if (score < 18 && newScore >= 18) {
+        boostActive = true;
+        boostType = null;
+        setBoostEffect();
+      }
       score = newScore;
       scoreBoard.textContent = `점수: ${score}`;
       // 게이지 업데이트
@@ -107,26 +145,39 @@
         failMsg.style.display = 'none';
       }
     }
-    document.getElementById('btn20').addEventListener('click', function() {
-      if (Math.random() < 0.2) {
-        updateScore(score + 3);
+    function setBoostEffect() {
+      // 모든 버튼에 boost 클래스 추가
+      document.getElementById('btn20').classList.add('boost');
+      document.getElementById('btn50').classList.add('boost');
+      document.getElementById('btn75').classList.add('boost');
+    }
+    function clearBoostEffect() {
+      document.getElementById('btn20').classList.remove('boost');
+      document.getElementById('btn50').classList.remove('boost');
+      document.getElementById('btn75').classList.remove('boost');
+    }
+    function handleChallenge(btnId, baseProb, boostProb, scoreInc) {
+      let prob = baseProb;
+      if (boostActive && (!boostType || boostType === btnId)) {
+        prob = boostProb;
+        boostType = btnId;
+        boostActive = false;
+        setTimeout(clearBoostEffect, 500); // 이펙트 잠깐 유지
+      }
+      if (Math.random() < prob) {
+        updateScore(score + scoreInc);
       } else {
         updateScore(0);
       }
+    }
+    document.getElementById('btn20').addEventListener('click', function() {
+      handleChallenge('btn20', 0.2, 0.5, 3);
     });
     document.getElementById('btn50').addEventListener('click', function() {
-      if (Math.random() < 0.5) {
-        updateScore(score + 2);
-      } else {
-        updateScore(0);
-      }
+      handleChallenge('btn50', 0.5, 0.7, 2);
     });
     document.getElementById('btn75').addEventListener('click', function() {
-      if (Math.random() < 0.75) {
-        updateScore(score + 1);
-      } else {
-        updateScore(0);
-      }
+      handleChallenge('btn75', 0.75, 0.9, 1);
     });
   </script>
 </body>
